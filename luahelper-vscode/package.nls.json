@@ -49,6 +49,7 @@
     "luahelper.project.IgnoreFileOrDir": "Ignore analysis files and directories. Sample：one11.lua , indicates to ignore files; .vscode/ , indicates to ignore directories.",
     "luahelper.project.IgnoreFileOrDirErrors": "Ignored file and directory errors. Sample: one11.lua,  indicates to ignore file errors, .vscode/ , indicates to ignore directory errors.",
     "luahelper.format.allReadMe": "Read all formatting settings [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md).\n",
+    "luahelper.format.IgnoreFileOrDir": "Ignore format files and directories. Sample：one11.lua , indicates to ignore files; .vscode/ , indicates to ignore directories.",
     "luahelper.format.column_limit": "Column limit of one line [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#column_limit).\n",
     "luahelper.format.indent_width": "The number of spaces used for indentation [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#indent_width).\n",
     "luahelper.format.use_tab": "Use tab for indent [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#use_tab).\n",

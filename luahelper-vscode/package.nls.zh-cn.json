@@ -49,6 +49,7 @@
     "luahelper.workspace.IgnoreFileOrDir": "忽略分析指定的文件或文件夹。例如：one11.lua表示忽略分析文件；.vscode/ 表示忽略分析文件夹",
     "luahelper.workspace.IgnoreFileOrDirErrors": "忽略指定的文件或文件夹的检查错误（文件或文件会被分析，但不会报错）。例如：one11.lua表示忽略文件错误；.vscode/ 表示忽略文件夹错误",
     "luahelper.format.allReadMe": "阅读所有格式化参数请参考 [这里](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md).\n",
+    "luahelper.format.IgnoreFileOrDir": "忽略格式化指定的文件或文件夹。例如：one11.lua表示忽略分析文件；.vscode/ 表示忽略分析文件夹",
     "luahelper.format.column_limit": "一列的字数限制. Column limit of one line [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#column_limit).\n",
     "luahelper.format.indent_width": "用于缩进的空格数.The number of spaces used for indentation [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#indent_width).\n",
     "luahelper.format.use_tab": "使用制表符tab来缩进. Use tab for indent [here](https://github.com/Koihik/LuaFormatter/blob/master/docs/Style-Config.md#use_tab).\n",

@@ -296,14 +296,48 @@ export class LuaFormatRangeProvider implements vscode.DocumentRangeFormattingEdi
 
 export class LuaFormatProvider implements vscode.DocumentFormattingEditProvider {
     private context: vscode.ExtensionContext;
+    private ignorePatterns: RegExp[];
 
     constructor(context: vscode.ExtensionContext) {
         this.context = context;
+        const ignorePaths = vscode.workspace.getConfiguration().get('luahelper.format.ignoreFileOrDir') as string[];
+        this.ignorePatterns = this.pathsToRegex(ignorePaths);
+
+        vscode.workspace.onDidChangeConfiguration((event) => {
+            if (event.affectsConfiguration('luahelper.format.ignoreFileOrDir')) {
+                // 如果配置项发生变化，则重新获取配置项
+                const ignorePaths = vscode.workspace.getConfiguration().get('luahelper.format.ignoreFileOrDir') as string[];
+                this.ignorePatterns = this.pathsToRegex(ignorePaths);
+            }
+        });
+    }
+    // 从路径数组创建正则表达式数组，同时处理可能出现的异常
+    private pathsToRegex(paths: string[]): RegExp[] {
+        const regexes = [];
+        for (const path of paths) {
+            try {
+                regexes.push(new RegExp(path));
+            } catch (error) {
+                vscode.window.showErrorMessage(`Invalid regular expression in 'luahelper.format.ignoreFileOrDir': '${path}'`);
+            }
+        }
+        return regexes;
+    }
+    private isIgnored(fileName: string): boolean {
+        // 遍历所有忽略的正则表达式，如果有任何一个匹配，就返回true
+        for (const pattern of this.ignorePatterns) {
+            if (pattern.test(fileName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): Thenable<vscode.TextEdit[]> {
+        if (this.isIgnored(document.fileName)) {
+            return Promise.resolve([]);
+        }
         var data = document.getText();
-
         let formatErrshow = needShowFormatErr();
         let formatConfigStrTable: string[] = getFormatConfigStrTable();
         return new Promise((resolve, reject) => {
@@ -311,7 +345,6 @@ export class LuaFormatProvider implements vscode.DocumentFormattingEditProvider 
             if (binaryPath === "") {
                 return;
             }
-
             try {
                 const args = ["-i"];
                 for (let str of formatConfigStrTable) {
