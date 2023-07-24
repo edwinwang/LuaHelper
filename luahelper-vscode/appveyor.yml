@@ -14,4 +14,3 @@ build_script:
     vsce package
 artifacts:
 - path: '*.vsix'
-platform: x64
