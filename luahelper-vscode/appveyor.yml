@@ -4,13 +4,18 @@ stack: node 12
 build_script:
 - sh: >-
     npm i
-
+    echo "npm i executed"
+    
     npm i vsce -g
-
+    echo "vsce installed"
+    
     node ./build/prepare-version.js
-
+    echo "prepare-version script executed"
+    
     node ./build/prepare.js
-
+    echo "prepare script executed"
+    
     vsce package
+    echo "vsce package executed"
 artifacts:
 - path: '*.vsix'
