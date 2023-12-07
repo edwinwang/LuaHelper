@@ -313,20 +313,33 @@ export class LuaFormatProvider implements vscode.DocumentFormattingEditProvider 
     }
     // 从路径数组创建正则表达式数组，同时处理可能出现的异常
     private pathsToRegex(paths: string[]): RegExp[] {
-        const regexes = [];
-        for (const path of paths) {
-            try {
-                regexes.push(new RegExp(path));
-            } catch (error) {
-                vscode.window.showErrorMessage(`Invalid regular expression in 'luahelper.format.ignoreFileOrDir': '${path}'`);
-            }
+        try {
+            return paths.map(path => {
+                // 转义正则表达式的特殊字符
+                let regexString = path.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    
+                // 将路径中的通配符 '*' 转换为正则表达式的 '.*'
+                regexString = regexString.replace(/\*/g, '.*');
+    
+                // 如果是目录（以斜杠结尾），应匹配任何以该目录为前缀的路径
+                if (regexString.endsWith('/')) {
+                    regexString = `${regexString}.*lua`;
+                }
+    
+                // 返回构建的正则表达式，添加开始和结束的锚点
+                return new RegExp(`${regexString}$`);
+            });
+        } catch (error) {
+            return []; // 返回一个空的正则表达式数组，或者根据需要处理错误
         }
-        return regexes;
     }
     private isIgnored(fileName: string): boolean {
         // 遍历所有忽略的正则表达式，如果有任何一个匹配，就返回true
+        fileName = fileName.replace(/\\/g, '/');
+        // vscode.window.showErrorMessage(fileName);
         for (const pattern of this.ignorePatterns) {
             if (pattern.test(fileName)) {
+                // vscode.window.showErrorMessage("isIgnored");
                 return true;
             }
         }
